@@ -19,8 +19,9 @@ CMD ["aafire"]
 3. Собран `Docker-образ`
 В папке с файлом `Dockerfile` выполнена команда:
 ```bash
-docker build -t aafire_image .
+sudo docker build -t aafire_image .
 ```
+![image](https://github.com/user-attachments/assets/e4632194-dddd-4e9a-8447-b5ad6906221f)
 
 *Объяснение:*
 - `docker build` — собирает Docker-образ.
@@ -30,91 +31,87 @@ docker build -t aafire_image .
 Проверена успешность сборки:
 Следующая команда ...
 ```bash
-docker images
+sudo docker images
 ```
 ... вывела:
+![image](https://github.com/user-attachments/assets/78772063-325d-49aa-871f-8a0e2df4f3c0)
 
-4. Запустить первый контейнер
-Запустите первый контейнер:
+4. Запуск контейнеров
+```bash
+sudo docker run --name first_container -it aafire_image
+sudo docker run --name second_container -it aafire_image
+```
 
-bash
-Копировать код
-docker run --name mycontainer1 -it aafire_image
-Объяснение:
+*Объяснение:*
+- `docker run` — запускает новый контейнер.
+- `--name <container_name>` — задаёт имя контейнеру.
+- `-it` — запускает контейнер в интерактивном режиме.
+- `aafire_image` — имя образа, на основе которого будет создан контейнер.
+  
+На экране появилась анимация огня `aafire`:
+![image](https://github.com/user-attachments/assets/c18a1fc1-823d-4ad5-994f-5a8dc5a623d7)
 
-docker run — запускает новый контейнер.
---name mycontainer1 — задаёт имя контейнеру.
--it — запускает контейнер в интерактивном режиме.
-aafire_image — имя образа.
-На экране появится анимация огня aafire. Сделайте скриншот.
+Проверка, что оба контейнера созданы:
+```bash
+sudo docker ps -a
+```
+![image](https://github.com/user-attachments/assets/4d95f25e-1197-4375-ae2e-31c129a61640)
 
-5. Запустить второй контейнер
-Откройте новое окно терминала и запустите второй контейнер:
+5. Запуск контейнеров:
+```bash
+sudo docker start first_container second_container
+```
+Статус контейнеров должен поменяться.
+![image](https://github.com/user-attachments/assets/fb9e5003-7ebc-4146-986e-428612e8aeff)
 
-bash
-Копировать код
-docker run --name mycontainer2 -it aafire_image
-Проверьте, что оба контейнера работают:
 
-bash
-Копировать код
-docker ps
-6. Создать и подключить сеть
-Создайте сеть myNetwork:
+5. Создание и подключение сети
+```bash
+sudo docker network create Network
+```
+Подключение контейнеров к сети:
+```bash
+sudo docker network connect Network first_container
+sudo docker network connect Network second_container
+```
+![image](https://github.com/user-attachments/assets/36e12006-f981-41f5-bce7-74ed936a83ce)
 
-bash
-Копировать код
-docker network create myNetwork
-Объяснение:
+Проверка подключения контейнеров:
+```bash
+sudo docker network inspect Network
+```
+В поле `containers` должны быть указаны данные о созданных контейнерах:
+![image](https://github.com/user-attachments/assets/09bb48ca-9c8b-4e99-b53e-cc7c5f293228)
 
-docker network create — создаёт новую сеть.
-myNetwork — имя сети.
-Подключите оба контейнера к сети:
+***Запомним также адреса контейнеров в сети** (поле `"IPv4Address"`):*
 
-bash
-Копировать код
-docker network connect myNetwork mycontainer1
-docker network connect myNetwork mycontainer2
-Объяснение:
+`first_container` — `172.18.0.2/16`
 
-docker network connect — подключает контейнер к указанной сети.
-mycontainer1, mycontainer2 — имена контейнеров.
-Убедитесь, что контейнеры подключены:
+`second_container` — `172.18.0.3/16`
 
-bash
-Копировать код
-docker network inspect myNetwork
-Объяснение:
+7. Проверка соединения
+Запуск `bash` внутри `first_container`:
+```bash
+sudo docker exec -it first_container bash
+```
+*Объяснение:*
+- `docker exec` — запускает команду внутри работающего контейнера.
+- `-it` — интерактивный режим.
+- `bash` — запускает оболочку Bash внутри контейнера.
 
-docker network inspect — отображает информацию о сети.
-7. Проверить соединение
-Подключитесь к контейнеру mycontainer1:
+Проверка соединения с `second_container`:
+```bash
+ping 172.18.0.3
+```
+![image](https://github.com/user-attachments/assets/01f6cf81-71ce-460d-8be7-4f63d9d3a659)
 
-bash
-Копировать код
-docker exec -it mycontainer1 bash
-Объяснение:
 
-docker exec — запускает команду внутри работающего контейнера.
--it — интерактивный режим.
-bash — запускает оболочку Bash внутри контейнера.
-Найдите IP-адрес второго контейнера:
+Аналогично проверяем доступ `second_container` к `first_container`:
+![image](https://github.com/user-attachments/assets/13b33a82-fe62-4218-ae3d-0d0a44d54f29)
 
-bash
-Копировать код
-docker network inspect myNetwork
-Обратите внимание на поле "IPv4Address" для контейнера mycontainer2.
-
-Проверьте соединение с mycontainer2, выполнив команду:
-
-bash
-Копировать код
-ping <IP-адрес mycontainer2>
-Сделайте скриншот результата.
-
-8. Финальная проверка
-Убедитесь, что:
-
-Анимация aafire работает в обоих контейнерах.
-ping между контейнерами успешен.
+8. Выключение контейнеров:
+```bash
+sudo docker stop first_container second_container
+```
+![image](https://github.com/user-attachments/assets/c921f9e3-e717-49e6-b73e-04a9ebcfce2c)
 
