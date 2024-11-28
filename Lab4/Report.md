@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y libaa-bin iputils-ping && apt-get clean
 CMD ["aafire"]
 ```
 *Объяснение:*
-- `FROM ubuntu:latest` — указывает базовый образ `Ubuntu`, на основе которого будут работать контейнеры. Команда, указанная после RUN, исполняется в контейнере во время сборки образа
+- `FROM ubuntu:latest` — указывает базовый образ `Ubuntu`, на основе которого будут работать контейнеры. Команда, указанная после `RUN`, исполняется в контейнере во время сборки образа
 - `RUN apt-get update && apt-get install -y libaa-bin iputils-ping` указывает, какие команды необходимо выполнить в контейнере во время сборки образа:
   - устанавливает пакет `libaa-bin` (содержит `aafire`).
   - устанавливает `iputils-ping` (утилита `ping`).
@@ -32,11 +32,9 @@ sudo docker build -t aafire_image .
 - `.` — указывает, что `Dockerfile` находится в текущей директории.
 
 Проверена успешность сборки:
-Следующая команда ...
 ```bash
 sudo docker images
 ```
-... вывела:
 ![image](https://github.com/user-attachments/assets/78772063-325d-49aa-871f-8a0e2df4f3c0)
 
 4. Запуск контейнеров
@@ -52,6 +50,7 @@ sudo docker run --name second_container -it aafire_image
 - `aafire_image` — имя образа, на основе которого будет создан контейнер.
   
 На экране появилась анимация огня `aafire`:
+
 ![image](https://github.com/user-attachments/assets/c18a1fc1-823d-4ad5-994f-5a8dc5a623d7)
 
 Проверка, что оба контейнера созданы:
@@ -64,7 +63,8 @@ sudo docker ps -a
 ```bash
 sudo docker start first_container second_container
 ```
-Статус контейнеров должен поменяться.
+Статус контейнеров должен поменяться:
+
 ![image](https://github.com/user-attachments/assets/fb9e5003-7ebc-4146-986e-428612e8aeff)
 
 
@@ -83,7 +83,8 @@ sudo docker network connect Network second_container
 ```bash
 sudo docker network inspect Network
 ```
-В поле `containers` должны быть указаны данные о созданных контейнерах:
+В поле `Containers` должны быть указаны данные о созданных контейнерах:
+
 ![image](https://github.com/user-attachments/assets/09bb48ca-9c8b-4e99-b53e-cc7c5f293228)
 
 ***Запомним также адреса контейнеров в сети** (поле `"IPv4Address"`):*
@@ -110,6 +111,7 @@ ping 172.18.0.3
 
 
 Аналогично проверяем доступ `second_container` к `first_container`:
+
 ![image](https://github.com/user-attachments/assets/13b33a82-fe62-4218-ae3d-0d0a44d54f29)
 
 8. Выключение контейнеров:
