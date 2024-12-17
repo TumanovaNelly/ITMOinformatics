@@ -82,28 +82,36 @@ git flow init
 
 ![image](https://github.com/user-attachments/assets/b220a1da-a1df-42ef-b53c-21dc61df3a83)
 `Git flow` сразу же создает новую ветку `develop` на основе `main` и переключается на нее. 
+
 2. Добавим новую функциональность в наш проект. Для этого сначала создадим фича-ветку `hello-task`:
+
 ![image](https://github.com/user-attachments/assets/62192602-0fcc-4da2-a5c0-cf93015c98fc)
 `Git flow` автоматически переключает на созданную ветку.
 
 Создадим программу на `python`, содержащую функцию вывода `Hello, World` на экран:
+
 ![image](https://github.com/user-attachments/assets/b7711346-c92c-47b2-a66b-9d87cea1bf50)
 
 Закоммитим изменения в ветку `feature/hello-task`:
+
 ![image](https://github.com/user-attachments/assets/e3885f7a-7eff-4666-bdaf-5ef30c72a97f)
 
 Допустим, на одном коммите разработка новой функциональности завершилась. Теперь можно слить фича-ветку с `develop`:
+
 ![image](https://github.com/user-attachments/assets/e27b63eb-5075-4dab-8a8e-dabf655e8806)
 `Git flow` переключается автоматически на ветку `develop` и выполняет слияние
 
 3. Создадим новый релиз проекта. Сначала создадим новую релиз-ветку `v1.0.0`:
+
 ![image](https://github.com/user-attachments/assets/d44d9ab2-6c50-4209-9a7d-0e28f957e016)
 `Git flow` автоматически переключается на созданную ветку.
 
 Внесем изменения, связанные с релизом. Например, обновим `README.md` и закоммитим изменения в ветку `release/v1.0.0`
+
 ![image](https://github.com/user-attachments/assets/d4de41d3-529b-4649-aff0-f9dbe6debe52)
 
 Допустим, это все изменения, которые необходимо сделать. Значит, можно слить релиз-ветку с `main` и `develop` ветками
+
 ![image](https://github.com/user-attachments/assets/429d78a3-2095-42e8-a583-d60a94895da2)
 `Git flow` переключается на ветку `main` и выполняет слияние с релиз-веткой, далее переключается на ветку `develop` и выполняет слияние с релиз-веткой.
 
